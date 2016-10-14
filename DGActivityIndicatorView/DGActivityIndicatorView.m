@@ -47,7 +47,7 @@ static const CGFloat kDGActivityIndicatorDefaultSize = 40.0f;
 @interface DGActivityIndicatorView () {
     CALayer *_animationLayer;
 }
-
+@property (nonatomic,assign) NSUInteger counter;
 @end
 
 @implementation DGActivityIndicatorView
@@ -107,6 +107,8 @@ static const CGFloat kDGActivityIndicatorDefaultSize = 40.0f;
 }
 
 - (void)startAnimating {
+    _counter++;
+    
     if (!_animationLayer.sublayers) {
         [self setupAnimation];
     }
@@ -116,9 +118,14 @@ static const CGFloat kDGActivityIndicatorDefaultSize = 40.0f;
 }
 
 - (void)stopAnimating {
-    _animationLayer.speed = 0.0f;
-    _animating = NO;
-    self.hidden = YES;
+    if (_counter >= 1) {//表示有start过
+        _counter--;
+        if (_counter == 0) {
+            _animationLayer.speed = 0.0f;
+            _animating = NO;
+            self.hidden = YES;
+        }
+    }
 }
 
 #pragma mark -
